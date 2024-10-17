@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message Sender Sample</title>
+    <script>
+        // sendRegInfo関数
+        function sendRegInfo(url) {
+            if (!woff.isLoggedIn() && !woff.isInClient()) {
+                woff.login().then(() => {
+                    return woff.getAccessToken();
+                }).then((token) => {
+                    return woff.sendMessage({
+                        'content': 'Hello Works!',
+                        'token': token // アクセストークンが必要ならここで使用
+                    });
+                }).then(function () {
+                    window.alert('メッセージが送信されました');
+                }).catch(function (error) {
+                    console.log('エラー:', error);
+                    window.alert('エラーが発生しました: ' + error);
+                });
+            } else {
+                woff.getAccessToken().then((token) => {
+                    return woff.sendMessage({
+                        'content': 'Hello Works!',
+                        'token': token // アクセストークンが必要ならここで使用
+                    });
+                }).then(function () {
+                    window.alert('メッセージが送信されました');
+                }).catch(function (error) {
+                    window.alert('メッセージ送信時にエラーが発生しました: ' + error);
+                });
+            }
+        }
+
+        // ダミーのwoffオブジェクト
+        var woff = {
+            isLoggedIn: function() {
+                return false; // ログイン状態をテストするための仮設定
+            },
+            isInClient: function() {
+                return false; // クライアント内かどうかをテストするための仮設定
+            },
+            login: function() {
+                return new Promise(function(resolve) {
+                    console.log("ログイン処理が行われました");
+                    resolve(); // ログイン成功を仮定
+                });
+            },
+            getAccessToken: function() {
+                return new Promise(function(resolve) {
+                    console.log("アクセストークン取得");
+                    resolve("dummyAccessToken"); // 仮のアクセストークンを返す
+                });
+            },
+            sendMessage: function(message) {
+                return new Promise(function(resolve, reject) {
+                    console.log("メッセージ送信:", message);
+                    // メッセージ送信を成功と仮定
+                    resolve();
+                });
+            }
+        };
+    </script>
+</head>
+<body>
+    <h1>メッセージ送信テスト</h1>
+    <p>ボタンをクリックしてメッセージを送信してください。</p>
+    <!-- ボタンをクリックするとsendRegInfo関数が呼ばれる -->
+    <button id="sendMessageButton" onclick="sendRegInfo('https://example.com')">メッセージを送信</button>
+</body>
+</html>
