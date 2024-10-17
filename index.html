@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WOFF SDK メッセージ送信</title>
+<script charset="utf-8" src="https://static.worksmobile.net/static/wm/woff/edge/3.6/sdk.js"> </script>
+</head>
+<body>
+  <h1>WOFF メッセージ送信テスト</h1>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // WOFF SDKの初期化
+      woff.init({
+        woffId: 'wgitwErqmw-H_UdAAxnjzQ' // 発行された WOFF ID を指定
+      })
+      .then(() => {
+        // WOFF が LINE WORKS クライアント内で実行されているか確認
+        if (woff.isInClient()) {
+          // メッセージを自動送信
+          woff.sendMessage({
+            content: 'Hello、Works！'
+          })
+          .then(() => {
+            console.log('Message sent');
+          })
+          .catch((error) => {
+            console.error('Error sending message:', error);
+          });
+        } else {
+          console.warn('Not running inside LINE WORKS client.');
+        }
+      })
+      .catch((err) => {
+        console.error('Initialization failed:', err);
+      });
+    });
+  </script>
+</body>
+</html>
